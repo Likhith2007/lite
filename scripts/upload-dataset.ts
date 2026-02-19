@@ -1,14 +1,19 @@
 /**
- * Uploads/updates the dataset to HuggingFace
+ * Regenerates and uploads the dataset to HuggingFace
  *
  * Usage:
  *   HF_TOKEN=xxx npx tsx scripts/upload-dataset.ts [dataset-dir] [repo-name]
+ *
+ * Arguments:
+ *   dataset-dir - Directory containing the dataset with documents/ subfolder
+ *                 (default: ./dataset)
+ *   repo-name   - HuggingFace repository name (default: liteparse/e2e-test-outputs)
  *
  * Environment variables:
  *   HF_TOKEN - HuggingFace API token with write access
  *
  * This script:
- * 1. Regenerates the dataset from e2e-test-docs
+ * 1. Regenerates metadata.jsonl by re-running liteparse on documents/ in the dataset
  * 2. Uploads to HuggingFace using the huggingface_hub API
  */
 
@@ -19,7 +24,7 @@ const DEFAULT_OUTPUT_DIR = path.join(import.meta.dirname, "..", "dataset");
 const DEFAULT_REPO = "liteparse/e2e-test-outputs";
 
 async function main() {
-  const outputDir = process.argv[2] || DEFAULT_OUTPUT_DIR;
+  const datasetDir = process.argv[2] || DEFAULT_OUTPUT_DIR;
   const repoName = process.argv[3] || DEFAULT_REPO;
   const hfToken = process.env.HF_TOKEN;
 
@@ -29,16 +34,20 @@ async function main() {
     process.exit(1);
   }
 
+  const documentsDir = path.join(datasetDir, "documents");
+
   console.log("LiteParse Dataset Upload");
   console.log("========================");
-  console.log(`Output: ${outputDir}`);
+  console.log(`Dataset: ${datasetDir}`);
+  console.log(`Documents: ${documentsDir}`);
   console.log(`Repo: ${repoName}`);
   console.log();
 
-  // Step 1: Regenerate dataset
-  console.log("Step 1: Regenerating dataset...");
+  // Step 1: Regenerate dataset from documents in the dataset directory
+  console.log("Step 1: Regenerating dataset from existing documents...");
   try {
-    execSync(`npx tsx scripts/create-dataset.ts "${outputDir}"`, {
+    // Pass both output dir and source docs dir (documents/ within the dataset)
+    execSync(`npx tsx scripts/create-dataset.ts "${datasetDir}" "${documentsDir}"`, {
       cwd: path.join(import.meta.dirname, ".."),
       stdio: "inherit",
     });
@@ -53,7 +62,7 @@ async function main() {
     // Use hf cli to upload
     // This requires hf cli to be installed: brew install huggingface-cli
     execSync(
-      `hf upload ${repoName} "${outputDir}" --repo-type dataset --token "${hfToken}"`,
+      `hf upload ${repoName} "${datasetDir}" --repo-type dataset --token "${hfToken}"`,
       {
         cwd: path.join(import.meta.dirname, ".."),
         stdio: "inherit",

@@ -1,5 +1,5 @@
 /**
- * Creates a dataset from e2e-test-docs for regression testing
+ * Creates a dataset for regression testing
  *
  * Output structure:
  *   dataset/
@@ -10,7 +10,11 @@
  *     metadata.jsonl  (each line: {"file_name": "documents/doc1.pdf", "document": "doc1.pdf", "page": 1, "output_json": {...}})
  *
  * Usage:
- *   npx tsx scripts/create-dataset.ts [output-dir]
+ *   npx tsx scripts/create-dataset.ts [output-dir] [source-docs-dir]
+ *
+ * Arguments:
+ *   output-dir      - Where to write the dataset (default: ./dataset)
+ *   source-docs-dir - Where to read source documents from (default: ./e2e-test-docs)
  *
  * The dataset can be used with compare-dataset.ts to detect output changes.
  */
@@ -19,7 +23,7 @@ import { LiteParse } from "../src/lib.js";
 import * as fs from "fs/promises";
 import * as path from "path";
 
-const E2E_DOCS_DIR = path.join(import.meta.dirname, "..", "e2e-test-docs");
+const DEFAULT_SOURCE_DIR = path.join(import.meta.dirname, "..", "e2e-test-docs");
 const DEFAULT_OUTPUT_DIR = path.join(import.meta.dirname, "..", "dataset");
 
 interface DatasetRow {
@@ -112,12 +116,21 @@ async function processFile(filePath: string, baseDocDir: string): Promise<Datase
 
 async function main() {
   const outputDir = process.argv[2] || DEFAULT_OUTPUT_DIR;
+  const sourceDocsDir = process.argv[3] || DEFAULT_SOURCE_DIR;
   const documentsDir = path.join(outputDir, "documents");
+
+  // Check if source is already in the output documents folder (skip copy in this case)
+  const resolvedSource = path.resolve(sourceDocsDir);
+  const resolvedDocuments = path.resolve(documentsDir);
+  const skipCopy = resolvedSource === resolvedDocuments;
 
   console.log("LiteParse Dataset Generator");
   console.log("===========================");
-  console.log(`Source: ${E2E_DOCS_DIR}`);
+  console.log(`Source: ${sourceDocsDir}`);
   console.log(`Output: ${outputDir}`);
+  if (skipCopy) {
+    console.log(`(Source is output documents dir - skipping copy)`);
+  }
   console.log();
 
   // Create output directories
@@ -125,23 +138,25 @@ async function main() {
 
   // Find all processable files
   console.log("Finding files...");
-  const files = await findFiles(E2E_DOCS_DIR);
+  const files = await findFiles(sourceDocsDir);
   console.log(`Found ${files.length} files to process\n`);
 
-  // Process each file and copy to documents folder
+  // Process each file and copy to documents folder (unless source is already there)
   const allRows: DatasetRow[] = [];
   const copiedDocs = new Set<string>();
 
   for (const file of files) {
-    const rows = await processFile(file, E2E_DOCS_DIR);
+    const rows = await processFile(file, sourceDocsDir);
     allRows.push(...rows);
 
-    // Copy document file to dataset (only once per document)
-    const relativePath = path.relative(E2E_DOCS_DIR, file);
-    if (!copiedDocs.has(relativePath)) {
+    // Copy document file to dataset (only once per document, skip if source is output)
+    const relativePath = path.relative(sourceDocsDir, file);
+    if (!skipCopy && !copiedDocs.has(relativePath)) {
       const destPath = path.join(documentsDir, relativePath);
       await fs.mkdir(path.dirname(destPath), { recursive: true });
       await fs.copyFile(file, destPath);
+      copiedDocs.add(relativePath);
+    } else if (skipCopy) {
       copiedDocs.add(relativePath);
     }
   }

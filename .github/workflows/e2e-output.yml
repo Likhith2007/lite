@@ -128,6 +128,12 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Download existing dataset from HuggingFace
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          hf download 'llamaindex/liteparse_cicd_data' --local-dir expected-dataset --repo-type dataset --token ${{ secrets.HF_TOKEN }}
+
       - name: Generate and upload dataset
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
@@ -136,4 +142,4 @@ jobs:
             echo "Warning: HF_TOKEN not set, skipping upload"
             exit 0
           fi
-          npx tsx scripts/upload-dataset.ts dataset ${{ vars.HF_DATASET_REPO || 'liteparse/e2e-test-outputs' }}
+          npx tsx scripts/upload-dataset.ts expected-dataset ${{ vars.HF_DATASET_REPO || 'liteparse/e2e-test-outputs' }}
