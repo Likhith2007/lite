@@ -38,22 +38,12 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Download expected dataset
-        uses: actions/checkout@v4
-        with:
-          repository: ${{ vars.HF_DATASET_REPO || 'liteparse/e2e-test-outputs' }}
-          path: expected-dataset
-          # Use a GitHub mirror of the HF dataset, or download from HF directly
-        continue-on-error: true
-
-      - name: Download from HuggingFace (fallback)
-        if: failure()
+      - name: Download from HuggingFace
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
           pip install huggingface_hub
           hf download 'llamaindex/liteparse_cicd_data' --local-dir expected-dataset --repo-type dataset --token ${{ secrets.HF_TOKEN }}
-        continue-on-error: true
 
       - name: Compare outputs
         id: compare
