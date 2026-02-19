@@ -1,0 +1,153 @@
+name: E2E Output Validation
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+# For PRs, we need write permissions to add labels
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  compare-outputs:
+    runs-on: ubuntu-latest
+    outputs:
+      has_changes: ${{ steps.compare.outputs.has_changes }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libreoffice imagemagick ghostscript tesseract-ocr
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Download expected dataset
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ vars.HF_DATASET_REPO || 'liteparse/e2e-test-outputs' }}
+          path: expected-dataset
+          # Use a GitHub mirror of the HF dataset, or download from HF directly
+        continue-on-error: true
+
+      - name: Download from HuggingFace (fallback)
+        if: failure()
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          pip install huggingface_hub
+          hf download ${{ vars.HF_DATASET_REPO || 'liteparse/e2e-test-outputs' }} --local-dir expected-dataset --repo-type dataset --token ${{ secrets.HF_TOKEN }}
+        continue-on-error: true
+
+      - name: Compare outputs
+        id: compare
+        run: |
+          # Run comparison script
+          set +e
+          npx tsx scripts/compare-dataset.ts expected-dataset > comparison-output.txt 2>&1
+          EXIT_CODE=$?
+          set -e
+
+          cat comparison-output.txt
+
+          if [ $EXIT_CODE -eq 0 ]; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            echo "✓ No output changes detected"
+          elif [ $EXIT_CODE -eq 1 ]; then
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "⚠ Output changes detected - requires approval"
+          else
+            echo "has_changes=error" >> $GITHUB_OUTPUT
+            echo "✗ Error running comparison"
+            exit 1
+          fi
+
+      - name: Upload comparison results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: comparison-results
+          path: comparison-output.txt
+
+      - name: Add label for changed outputs (PR only)
+        if: github.event_name == 'pull_request' && steps.compare.outputs.has_changes == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              labels: ['output-changed']
+            })
+
+      - name: Require approval for output changes
+        if: steps.compare.outputs.has_changes == 'true'
+        run: |
+          echo "::warning::This PR changes liteparse output. Please review the comparison results."
+          echo ""
+          echo "To approve these changes:"
+          echo "1. Review the comparison output in the artifacts"
+          echo "2. Add the 'output-approved' label to this PR"
+          echo "3. Re-run this workflow"
+          exit 1
+
+  # This job only runs on main branch after merge
+  upload-dataset:
+    runs-on: ubuntu-latest
+    needs: compare-outputs
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libreoffice imagemagick ghostscript tesseract-ocr
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          npm ci
+          pip install huggingface_hub
+
+      - name: Build
+        run: npm run build
+
+      - name: Generate and upload dataset
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          if [ -z "$HF_TOKEN" ]; then
+            echo "Warning: HF_TOKEN not set, skipping upload"
+            exit 0
+          fi
+          npx tsx scripts/upload-dataset.ts dataset ${{ vars.HF_DATASET_REPO || 'liteparse/e2e-test-outputs' }}
