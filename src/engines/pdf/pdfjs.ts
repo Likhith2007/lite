@@ -127,49 +127,101 @@ const PIPE_PATTERN_REGEX = /\s*\|([^|])\|\s*/g;
 
 /**
  * Detect garbled text from fonts with corrupted ToUnicode mappings.
- * These fonts often map character codes to random Unicode points from
- * disparate blocks (e.g., Arabic + Latin Extended together).
+ *
+ * When PDF fonts lack proper ToUnicode maps, PDF.js may output characters
+ * mapped to unexpected Unicode code points. Common patterns include:
+ *
+ * 1. Private Use Area (PUA) characters - fonts often map glyphs here
+ * 2. Mix of unrelated scripts (Arabic + Latin Extended in English text)
+ * 3. Rare/obscure Unicode blocks appearing in normal text
+ * 4. Control characters or specials
  *
  * Returns true if the string appears to be garbled font output.
  */
 function isGarbledFontOutput(str: string): boolean {
   if (str.length < 3) return false;
 
+  let privateUseCount = 0;
   let arabicCount = 0;
   let latinExtendedCount = 0;
   let basicLatinLetterCount = 0;
+  let suspiciousCount = 0; // Other suspicious Unicode ranges
 
   for (const char of str) {
     const code = char.charCodeAt(0);
 
-    // Arabic block (0x600-0x6FF) and Arabic Supplement (0x750-0x77F)
-    if ((code >= 0x600 && code <= 0x6ff) || (code >= 0x750 && code <= 0x77f)) {
+    // Private Use Area (U+E000-U+F8FF) - almost always garbled
+    if (code >= 0xe000 && code <= 0xf8ff) {
+      privateUseCount++;
+    }
+    // Arabic block (0x600-0x6FF) and Arabic Extended (0x750-0x77F, 0x8A0-0x8FF)
+    else if (
+      (code >= 0x600 && code <= 0x6ff) ||
+      (code >= 0x750 && code <= 0x77f) ||
+      (code >= 0x8a0 && code <= 0x8ff)
+    ) {
       arabicCount++;
     }
-    // Latin Extended-A (0x100-0x17F) and Latin Extended-B (0x180-0x24F)
-    else if (code >= 0x100 && code <= 0x24f) {
+    // Latin Extended-A (0x100-0x17F), Latin Extended-B (0x180-0x24F),
+    // Latin Extended Additional (0x1E00-0x1EFF)
+    else if (
+      (code >= 0x100 && code <= 0x24f) ||
+      (code >= 0x1e00 && code <= 0x1eff)
+    ) {
       latinExtendedCount++;
     }
     // Basic Latin letters (a-z, A-Z)
     else if ((code >= 0x41 && code <= 0x5a) || (code >= 0x61 && code <= 0x7a)) {
       basicLatinLetterCount++;
     }
+    // Suspicious ranges that rarely appear in normal text:
+    // - Syriac (0x700-0x74F)
+    // - Thaana (0x780-0x7BF)
+    // - NKo (0x7C0-0x7FF)
+    // - Samaritan (0x800-0x83F)
+    // - Specials (0xFFF0-0xFFFF)
+    // - Geometric Shapes (0x25A0-0x25FF) in running text
+    // - Box Drawing (0x2500-0x257F) in running text
+    // - Combining Diacritical Marks alone (0x0300-0x036F)
+    else if (
+      (code >= 0x700 && code <= 0x7ff) || // Syriac, Thaana, NKo
+      (code >= 0x800 && code <= 0x83f) || // Samaritan
+      (code >= 0xfff0 && code <= 0xffff) || // Specials
+      (code >= 0x2500 && code <= 0x25ff) || // Box drawing, geometric shapes
+      (code >= 0x0300 && code <= 0x036f) // Combining marks (suspicious if frequent)
+    ) {
+      suspiciousCount++;
+    }
   }
 
-  // Heuristic: If text contains both Arabic AND Latin Extended characters,
-  // it's almost certainly a garbled font (this combination is extremely rare
-  // in legitimate text). We require at least 2 of each to avoid false positives.
+  const totalChars = str.length;
+
+  // Private Use Area characters are almost always garbled fonts
+  if (privateUseCount >= 2) {
+    return true;
+  }
+
+  // Mix of Arabic AND Latin Extended is extremely rare in legitimate text
   if (arabicCount >= 2 && latinExtendedCount >= 2) {
     return true;
   }
 
-  // Also flag text that is predominantly Latin Extended with very few basic letters
-  // (legitimate text in Latin-based languages would have mostly basic Latin)
-  const totalChars = str.length;
+  // High concentration of suspicious characters
+  if (suspiciousCount >= 3 || suspiciousCount > totalChars * 0.2) {
+    return true;
+  }
+
+  // Text predominantly Latin Extended with very few basic Latin letters
+  // (legitimate Latin-script text would have mostly basic Latin)
   if (
     latinExtendedCount > totalChars * 0.3 &&
     basicLatinLetterCount < totalChars * 0.2
   ) {
+    return true;
+  }
+
+  // Mix of Arabic/suspicious with Latin Extended (script mixing)
+  if ((arabicCount >= 1 || suspiciousCount >= 1) && latinExtendedCount >= 3) {
     return true;
   }
 
