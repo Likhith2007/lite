@@ -1,9 +1,8 @@
 import fs from "node:fs/promises";
-import { fileURLToPath } from "node:url";
-import { dirname, join } from "node:path";
 import { PdfEngine, PdfDocument, PageData, Image, Annotation, BoundingBox } from "./interface.js";
 import { TextItem } from "../../core/types.js";
 import { PdfiumRenderer } from "./pdfium-renderer.js";
+import { importPdfJs } from "./pdfjsImporter.js";
 
 /** PDF.js internal document type - opaque to our code */
 interface PdfJsDocument {
@@ -47,15 +46,7 @@ interface PdfJsExtendedDocument extends PdfDocument {
 }
 
 // Dynamic import of PDF.js
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-// From dist/src/engines/pdf/ we need to go up to dist/src/vendor/pdfjs
-const PDFJS_DIR = join(__dirname, "../../vendor/pdfjs");
-
-// Import PDF.js dynamically
-await import(`${PDFJS_DIR}/pdf.mjs`);
-const pdfjs = await import(`${PDFJS_DIR}/pdf.mjs`);
-const { getDocument } = pdfjs;
+const { fn: getDocument, dir: PDFJS_DIR } = await importPdfJs();
 
 const CMAP_URL = `${PDFJS_DIR}/cmaps/`;
 const STANDARD_FONT_DATA_URL = `${PDFJS_DIR}/standard_fonts/`;
