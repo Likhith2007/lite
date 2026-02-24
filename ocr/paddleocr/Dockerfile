@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 ghcr.io/astral-sh/uv:python3.12-trixie
+FROM ghcr.io/astral-sh/uv:python3.12-trixie
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \

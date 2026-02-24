@@ -11,24 +11,6 @@ from paddleocr import PaddleOCR
 from PIL import Image
 from pydantic import BaseModel
 
-LANGUAGE_MAP = {
-    "en": "en",
-    "zh": "ch",
-    "zh-cn": "ch",
-    "zh-hans": "ch",
-    "zh-tw": "chinese_cht",
-    "zh-hant": "chinese_cht",
-    "ja": "japan",
-    "ko": "korean",
-    "fr": "french",
-    "de": "german",
-    "es": "spanish",
-    "pt": "portuguese",
-    "ru": "russian",
-    "ar": "arabic",
-    "hi": "devanagari",
-}
-
 
 class OcrResponse(BaseModel):
     results: list[Any]
@@ -59,14 +41,13 @@ class PaddleOCRServer:
         ) -> OcrResponse:
             # Get language from request
             language = language.lower()
-            paddle_lang = LANGUAGE_MAP.get(language, "en")
 
             try:
                 # Initialize OCR if needed or language changed
-                if self.current_language != paddle_lang:
+                if self.current_language != language:
                     # PaddleOCR 3.x parameters
                     self.ocr = PaddleOCR(
-                        lang=paddle_lang,
+                        lang=language,
                         use_doc_orientation_classify=False,
                         use_doc_unwarping=False,
                         use_textline_orientation=True,
@@ -87,6 +68,10 @@ class PaddleOCRServer:
                 # PaddleOCR 3.x returns: list of result dicts
                 # Each result has: res['rec_texts'], res['rec_scores'], res['rec_boxes']
                 results = self.ocr.predict(image_array)
+            except ValueError as ve:
+                if "No models are available for the language" in str(ve):
+                    raise HTTPException(status_code=400, detail=str(ve))
+                raise HTTPException(status_code=500, detail=str(ve))
             except Exception as e:
                 raise HTTPException(status_code=500, detail=str(e))
 

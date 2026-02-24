@@ -62,8 +62,9 @@ class EasyOCRServer:
                 if isinstance(coords, np.ndarray):
                     coords = coords.tolist()
 
-                xs = [point[0] for point in coords]
-                ys = [point[1] for point in coords]
+                # int casting is necessary for pydantic serialization (np.Int32 are not serializable)
+                xs = [int(point[0]) for point in coords]
+                ys = [int(point[1]) for point in coords]
                 bbox = [min(xs), min(ys), max(xs), max(ys)]
 
                 formatted.append(
