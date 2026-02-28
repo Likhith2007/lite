@@ -81,7 +81,6 @@ export interface ProjectionTextBox {
   forceUnsnapped?: boolean;
   rotated?: boolean;
   d?: number; // Delta for rotation handling
-  isWordContinuation?: boolean; // True if this item continues from previous word
 }
 
 export interface Coordinates {

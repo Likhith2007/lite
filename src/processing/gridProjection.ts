@@ -1201,80 +1201,10 @@ export function projectToGrid(
           const xDelta = bbox.x - (prevBbox.x + prevBbox.w);
           const prevCharWidth = prevBbox.w / prevBbox.strLength;
 
-          // Check if items appear to be part of the same word
-          // Heuristics:
-          // 1. Very small gap (< 30% of char width) = definitely same word
-          // 2. Prev ends with letter, current starts with lowercase, AND
-          //    current looks like a word fragment
-          const prevStr = prevBbox.str.trimEnd();
-          const currStr = bbox.str.trimStart();
-          const prevEndsWithLetter = /[a-zA-Z]$/.test(prevStr);
-          const currStartsWithLowercase = /^[a-z]/.test(currStr);
+          // add a space
+          bbox.shouldSpace = 1;
 
-          // Common short standalone words that should NOT be merged
-          const standaloneWords = new Set([
-            "a",
-            "i",
-            "of",
-            "to",
-            "in",
-            "on",
-            "is",
-            "it",
-            "be",
-            "we",
-            "an",
-            "or",
-            "as",
-            "at",
-            "so",
-            "no",
-            "my",
-            "he",
-            "do",
-            "by",
-            "if",
-            "up",
-            "me",
-            "go",
-            "us",
-            "am",
-          ]);
-
-          const verySmallGap = xDelta < prevCharWidth * 0.3;
-          const currWord = currStr.toLowerCase().split(/\s/)[0];
-
-          // Check if current item looks like a word fragment:
-          // - Short word (<=3 chars) that's not a standalone word
-          // - Starts with doubled consonant (rr, ll, mm, nn, pp, tt, etc.) - unlikely to begin a word
-          // - Starts with certain letter patterns that indicate mid-word suffixes
-          const isShortFragment =
-            currWord.length <= 3 && !standaloneWords.has(currWord) && currStartsWithLowercase;
-          // Only truly doubled consonants - these almost never start English words
-          const startsWithDoubledConsonant = /^(bb|cc|dd|ff|gg|hh|jj|kk|ll|mm|nn|pp|qq|rr|ss|tt|vv|ww|xx|zz)/i.test(currWord);
-          // Common suffixes that indicate mid-word fragments
-          const startsWithSuffix =
-            /^(tion|sion|ness|ment|able|ible|ful|less|ing|ous|ive|ers|est|ly|ed|en|al|ic|y)$/i.test(
-              currWord
-            );
-          const isWordFragment =
-            isShortFragment || startsWithDoubledConsonant || startsWithSuffix;
-
-          // Looks like word continuation if:
-          // - Gap is very small, OR
-          // - Prev ends with letter AND current looks like a word fragment
-          const looksLikeWordContinuation =
-            verySmallGap || (prevEndsWithLetter && isWordFragment && currStartsWithLowercase);
-
-          // add a space (unless it looks like word continuation)
-          bbox.shouldSpace = looksLikeWordContinuation ? 0 : 1;
-
-          // Mark word continuations to skip floating anchor alignment
-          // and reset shouldSpace to 0
-          if (looksLikeWordContinuation) {
-            bbox.isWordContinuation = true;
-            bbox.shouldSpace = 0;
-          } else if (xDelta > prevCharWidth * 2) {
+          if (xDelta > prevCharWidth * 2) {
             // Check if both items are in the same column based on gap size
             // If gap is less than 10% of page width, treat as same column
             // This works for any number of columns
@@ -1376,13 +1306,7 @@ export function projectToGrid(
             targetX = lineMax;
           }
 
-          // For word continuations, place them right after the previous item
-          // with no extra spacing beyond shouldSpace
-          if (bbox.isWordContinuation) {
-            targetX = rawLines[lineIndex].trimEnd().length + (bbox.shouldSpace ?? 0);
-          }
-
-          if (!bbox.forceUnsnapped && !bbox.isWordContinuation) {
+          if (!bbox.forceUnsnapped) {
             const floatingAnchor = forwardAnchors.floating[Math.round(bbox.x)];
             if (floatingAnchor && targetX < floatingAnchor) {
               // Limit floating anchor adjustment to avoid excessive gaps in justified text
