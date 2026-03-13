@@ -117,7 +117,7 @@ async function processFile(filePath: string, baseDocDir: string): Promise<Datase
 async function main() {
   const outputDir = process.argv[2] || DEFAULT_OUTPUT_DIR;
   const sourceDocsDir = process.argv[3] || DEFAULT_SOURCE_DIR;
-  const documentsDir = path.join(outputDir, "documents");
+  const documentsDir = path.join(outputDir, "data");
 
   // Check if source is already in the output documents folder (skip copy in this case)
   const resolvedSource = path.resolve(sourceDocsDir);

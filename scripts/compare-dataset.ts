@@ -206,7 +206,7 @@ async function getCurrentOutput(
 
 async function main() {
   const datasetDir = process.argv[2] || DEFAULT_DATASET_DIR;
-  const documentsDir = path.join(datasetDir, "documents");
+  const documentsDir = path.join(datasetDir, "data");
 
   console.log("LiteParse Dataset Comparison");
   console.log("============================");

@@ -34,7 +34,7 @@ async function main() {
     process.exit(1);
   }
 
-  const documentsDir = path.join(datasetDir, "documents");
+  const documentsDir = path.join(datasetDir, "data");
 
   console.log("LiteParse Dataset Upload");
   console.log("========================");
