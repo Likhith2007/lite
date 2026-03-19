@@ -23,7 +23,18 @@ hard stuff so your models see clean, structured data.
 
 LiteParse is a standalone OSS PDF parsing tool focused exclusively on **fast and light** parsing. It provides high-quality spatial text parsing with bounding boxes, without proprietary LLM features or cloud dependencies. Everything runs locally on your machine. 
 
-### Features
+LiteParse is a standalone OSS PDF parsing tool focused exclusively on **fast and light** parsing. It provides high-quality spatial text parsing with bounding boxes, without proprietary LLM features or cloud dependencies. Everything runs locally on your machine. 
+
+**Hitting the limits of local parsing?**
+For complex documents (dense tables, multi-column layouts, charts, handwritten text, or 
+scanned PDFs), you'll get significantly better results with [LlamaParse](https://developers.llamaindex.ai/python/cloud/llamaparse/?utm_source=github&utm_medium=liteparse), 
+our cloud-based document parser built for production document pipelines. LlamaParse handles the 
+hard stuff so your models see clean, structured data and markdown.
+
+>  👉 [Sign up for LlamaParse free](https://cloud.llamaindex.ai?utm_source=github&utm_medium=liteparse)
+
+## Overview
+
 
 - **Fast Text Parsing**: Spatial text parsing using PDF.js
 - **Flexible OCR System**:
