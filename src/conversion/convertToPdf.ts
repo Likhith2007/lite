@@ -225,8 +225,20 @@ export async function findImageMagickCommand(): Promise<{
   }
 
   // ImageMagick v6 uses 'convert' command
-  if ((await isCommandAvailable("convert")) || (await isCommandAvailableWindows("convert"))) {
-    return { command: "convert", args: [] };
+  if (process.platform !== 'win32') {
+    if ((await isCommandAvailable("convert")) || (await isCommandAvailableWindows("convert"))) {
+      return { command: "convert", args: [] };
+    }
+  } else {
+    // On Windows, 'convert' is a FAT-to-NTFS utility. Ensure we don't accidentally run it.
+    try {
+      const stdout = await executeCommand("convert", ["-version"], 5000);
+      if (stdout.toLowerCase().includes("imagemagick")) {
+        return { command: "convert", args: [] };
+      }
+    } catch {
+      // Not ImageMagick
+    }
   }
 
   return null;
