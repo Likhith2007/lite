@@ -2,6 +2,7 @@ import Fastify from 'fastify';
 import multipart from '@fastify/multipart';
 import fastifyStatic from '@fastify/static';
 import { classifyRoute } from './routes/classify.js';
+import { chatRoute } from './routes/chat.js';
 import * as dotenv from 'dotenv';
 import path from 'path';
 
@@ -24,6 +25,7 @@ server.get('/', (req, reply) => {
 
 // Register routes
 server.register(classifyRoute);
+server.register(chatRoute);
 
 const start = async () => {
   try {

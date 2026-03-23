@@ -6,7 +6,7 @@ dotenv.config();
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
 const model = genAI.getGenerativeModel({ 
-  model: 'gemini-2.5-flash',
+  model: 'gemini-1.5-flash-latest',
   generationConfig: {
     responseMimeType: 'application/json'
   }
@@ -25,15 +25,17 @@ export async function processDocument(filePath: string) {
   try {
     // 1. Extract text using LiteParse
     const parsedData = await parser.parse(filePath);
-    const textContent = parsedData.text;
-
-    if (!textContent || textContent.trim() === '') {
-      throw new Error('Could not extract text from document');
-    }
+    let textContent = parsedData.text;
+    
+    // Heuristics for failed OCR:
+    const alphanumericCount = (textContent.match(/[a-zA-Z0-9]/g) || []).length;
+    const alphanumericRatio = textContent.length > 0 ? alphanumericCount / textContent.length : 0;
+    
+    const isOcrFailed = (!textContent || textContent.trim() === '' || textContent.length < 50 || alphanumericRatio < 0.5);
 
     // 2. Classify with Gemini
-    const systemPrompt = `You are an expert document classifier. 
-Based on the extracted text below, classify the document into exactly one of these predefined categories:
+    const basePrompt = `You are an expert document classifier. 
+Classify the provided document into exactly one of these predefined categories:
 - Identity Proofs (e.g., Aadhaar, PAN, Passport)
 - Financial Documents (e.g., Bank Statements, Invoices, Receipts)
 - Legal Agreements
@@ -51,14 +53,40 @@ You must return ONLY a JSON response matching this exact structure:
   "summary": "A 2-3 sentence overview of the document contents",
   "clauses": ["Key point/clause 1", "Key point/clause 2"],
   "risks": ["Potential risk or red flag 1", "Potential risk 2 (if any)"]
-}
+}`;
 
-Extracted Text:
----
-${textContent.substring(0, 15000)}
----`;
+    const path = await import('path');
+    const fileExt = path.extname(filePath).toLowerCase();
+    
+    let mimeType: string | null = null;
+    if (['.jpg', '.jpeg'].includes(fileExt)) mimeType = 'image/jpeg';
+    else if (fileExt === '.png') mimeType = 'image/png';
+    else if (fileExt === '.webp') mimeType = 'image/webp';
+    else if (fileExt === '.pdf') mimeType = 'application/pdf';
 
-    const result = await model.generateContent(systemPrompt);
+    const promptWithText = basePrompt + `\n\nExtracted Text (may be garbled if OCR quality is poor):\n---\n${textContent.substring(0, 15000)}\n---`;
+
+    let result;
+    if (mimeType) {
+      // Gemini 2.5 supports native vision for these formats, so we ALWAYS pass the file natively
+      // to let Gemini's internal multimodal engine override any bad local OCR!
+      console.log(`Passing ${mimeType} file natively to Gemini alongside text.`);
+      const fileData = await fs.readFile(filePath);
+      const filePart = {
+        inlineData: {
+          data: fileData.toString('base64'),
+          mimeType
+        }
+      };
+      
+      const modifiedPrompt = promptWithText + "\n\nPlease heavily rely on the visually attached document if the extracted text above seems garbled or incoherent.";
+      result = await model.generateContent([modifiedPrompt, filePart]);
+    } else {
+      // Unrecognized format for Native Vision, pray the extracted text is good enough
+      console.log("Passing only extracted text to Gemini");
+      result = await model.generateContent(promptWithText);
+    }
+    
     const responseText = result.response.text();
     
     let classification;

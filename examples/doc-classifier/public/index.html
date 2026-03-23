@@ -3,84 +3,480 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DocInsight AI</title>
+  <title>Aurora.ai Legal Document Intelligence</title>
   <link rel="stylesheet" href="/public/style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="background-orbs">
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-    <div class="orb orb-3"></div>
+  
+  <div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <div class="logo-icon">
+            <svg viewBox="0 0 24 24" fill="none" class="sparkle-icon">
+              <path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z" fill="white"/>
+            </svg>
+          </div>
+          <div class="logo-text">
+            <h2>Aurora.ai</h2>
+            <p>Legal Document<br>Intelligence</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <h4 class="section-title">NAVIGATION</h4>
+        <ul class="nav-list" id="nav-list">
+          <li class="nav-item active" data-target="dashboard-view">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+            Dashboard
+          </li>
+          <li class="nav-item" data-target="analyze-view">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+            Analyze Document
+          </li>
+          <li class="nav-item" data-target="library-view">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+            Document Library
+          </li>
+        </ul>
+      </div>
+
+      <div class="sidebar-section scrollable">
+        <h4 class="section-title">AI FEATURES</h4>
+        <div class="ai-feature-card">
+          <div class="ai-feature-header">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+            </div>
+            <div>
+              <h5>Smart Analysis</h5>
+              <span>Powered by AI</span>
+            </div>
+          </div>
+          <ul class="feature-bullets">
+            <li class="bullet green">Clause Detection</li>
+            <li class="bullet blue">Risk Assessment</li>
+            <li class="bullet purple">Plain Language</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="assistant-card">
+          <div class="assistant-avatar">AI</div>
+          <div class="assistant-info">
+            <h5>Legal AI Assistant</h5>
+            <span>Ready to analyze documents</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      
+      <!-- ================= DASHBOARD VIEW ================= -->
+      <div id="dashboard-view" class="view-section active">
+        <!-- Hero Header -->
+        <header class="hero">
+          <div class="sparkle-badge"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z" fill="white"/></svg></div>
+          <h1 class="hero-title">Legal Intelligence</h1>
+          <p class="hero-subtitle">Transform complex legal documents into plain language insights with AI-<br>powered analysis</p>
+          
+          <div class="analyze-actions">
+            <button class="btn btn-primary" id="analyze-main-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+              Analyze Document
+              <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+            <div class="status-indicator">
+              <span class="dot"></span> AI Ready • Real-time Analysis
+            </div>
+          </div>
+        </header>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-content">
+              <span class="stat-label">Total Documents</span>
+              <div class="stat-value">10</div>
+              <div class="stat-trend trend-up">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 7L13.5 15.5L8.5 10.5L2 17"></path><path d="M16 7H22V13"></path></svg>
+                12% increase <span class="trend-text">vs last week</span>
+              </div>
+            </div>
+            <div class="stat-icon icon-blue">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-content">
+              <span class="stat-label">Completed Analyses</span>
+              <div class="stat-value">10</div>
+              <div class="stat-trend trend-up">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 7L13.5 15.5L8.5 10.5L2 17"></path><path d="M16 7H22V13"></path></svg>
+                12% increase <span class="trend-text">vs last week</span>
+              </div>
+            </div>
+            <div class="stat-icon icon-green">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-content">
+              <span class="stat-label">High Risk Documents</span>
+              <div class="stat-value">1</div>
+              <div class="stat-trend trend-up">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 7L13.5 15.5L8.5 10.5L2 17"></path><path d="M16 7H22V13"></path></svg>
+                12% increase <span class="trend-text">vs last week</span>
+              </div>
+            </div>
+            <div class="stat-icon icon-red">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-content">
+              <span class="stat-label">Avg Processing Time</span>
+              <div class="stat-value">8.5s</div>
+              <div class="stat-trend trend-up">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 7L13.5 15.5L8.5 10.5L2 17"></path><path d="M16 7H22V13"></path></svg>
+                12% increase <span class="trend-text">vs last week</span>
+              </div>
+            </div>
+            <div class="stat-icon icon-purple">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dashboard Sections -->
+        <div class="dashboard-sections">
+          <div class="panel recent-docs-panel">
+            <div class="panel-header">
+              <h3>Recent Documents</h3>
+              <button class="btn btn-small outline">View All</button>
+            </div>
+            <div class="doc-list">
+              <div class="doc-item">
+                <div class="doc-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg></div>
+                <div class="doc-item-details">
+                  <h4>ZORA <svg class="verified-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg></h4>
+                  <div class="doc-meta">
+                    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> Mar 23, 2026</span>
+                    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg> 85% risk</span>
+                  </div>
+                </div>
+                <div class="doc-risk-badge high">HIGH</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel quick-actions-panel">
+            <div class="panel-header">
+              <h3><svg class="sparkle-small" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg> Quick Actions</h3>
+            </div>
+            
+            <div class="action-card drop-trigger">
+              <div class="action-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+              </div>
+              <div class="action-content">
+                <h4>Analyze Document</h4>
+                <p>Upload and analyze a new legal document</p>
+              </div>
+              <button class="btn-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= ANALYZE VIEW ================= -->
+      <div id="analyze-view" class="view-section hidden">
+        <header class="analyze-header">
+          <button class="icon-btn back-btn" id="back-to-dashboard">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          </button>
+          <div class="analyze-title-group">
+            <h2 class="analyze-title">Document Analysis</h2>
+            <p class="analyze-subtitle">Upload and analyze legal documents with AI</p>
+          </div>
+        </header>
+
+        <div class="big-dropzone drop-trigger" id="main-droparea">
+          <div class="big-drop-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+            <div class="big-sparkle"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z" fill="white"/></svg></div>
+          </div>
+          
+          <h3>Upload Legal Document</h3>
+          <p class="drop-desc">Drag & drop your legal document here or click to browse. Our AI will analyze it in seconds and provide clear insights.</p>
+          
+          <div class="drop-controls">
+            <button class="btn btn-primary drop-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg> Choose Document</button>
+            <span class="file-hint"><span class="dot"></span> Supports PDF, DOC, DOCX • Max 10MB</span>
+          </div>
+
+          <!-- Bottom feature cards inside the dropzone layout -->
+          <div class="inline-features">
+            <div class="f-card">
+               <div class="f-icon green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg></div>
+               <h5>Smart Analysis</h5>
+               <p>AI identifies risks, obligations, and</p>
+            </div>
+            <div class="f-card">
+               <div class="f-icon blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></div>
+               <h5>Plain Language</h5>
+               <p>Complex legal terms translated</p>
+            </div>
+            <div class="f-card">
+               <div class="f-icon purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg></div>
+               <h5>Interactive Q&A</h5>
+               <p>Ask questions about your</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= LIBRARY VIEW ================= -->
+      <div id="library-view" class="view-section hidden">
+        <header class="lib-header">
+          <div class="analyze-title-group">
+            <h2 class="analyze-title">Document Library</h2>
+            <p class="analyze-subtitle">Manage and review your analyzed documents</p>
+          </div>
+          <button class="btn btn-primary" id="lib-analyze-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg>
+            Analyze New Document
+          </button>
+        </header>
+
+        <div class="lib-filters">
+          <div class="search-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <input type="text" placeholder="Search documents..." id="lib-search" />
+          </div>
+          <div class="filter-actions-group">
+            <button class="filter-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg> All Status <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+            <button class="filter-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg> All Risk <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+          </div>
+        </div>
+
+        <div class="lib-grid" id="lib-grid">
+           <!-- Cards appended via JS -->
+        </div>
+      </div>
+
+      <!-- GLOBAL CAPTURE/REPORT UI -->
+      <!-- We place this fixed at the center or bottom so it works in both views -->
+      <div class="global-overlay hidden" id="loading">
+        <div class="progress-modal">
+          <div class="pm-header">
+            <div class="pm-icon bounce">
+              <div class="c-logo">C</div>
+            </div>
+            <h3 id="pm-title">Extracting Text</h3>
+            <p id="pm-subtitle">Reading document content...</p>
+            <div class="pm-file-badge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="file-icon"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+              <span id="pm-filename">filename.pdf</span>
+            </div>
+          </div>
+
+          <div class="pm-progress-section">
+            <div class="pm-progress-label">
+              <span>Processing Progress</span>
+              <span id="pm-percent">0%</span>
+            </div>
+            <div class="pm-progress-track">
+              <div class="pm-progress-fill" id="pm-fill" style="width: 0%"></div>
+            </div>
+          </div>
+
+          <div class="pm-steps">
+            <div class="pm-step active" id="step-1">
+              <div class="pm-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></div>
+              <div class="pm-step-text">
+                 <h4>Extracting Text</h4>
+                 <p>Reading document content...</p>
+              </div>
+              <div class="pm-step-spinner" id="spinner-1"><div class="mini-spin blue"></div></div>
+            </div>
+            
+            <div class="pm-step" id="step-2">
+              <div class="pm-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg></div>
+              <div class="pm-step-text">
+                 <h4>AI Analysis</h4>
+                 <p>Analyzing legal content and risks...</p>
+              </div>
+              <div class="pm-step-spinner hidden" id="spinner-2"><div class="mini-spin grey"></div></div>
+            </div>
+            
+            <div class="pm-step" id="step-3">
+              <div class="pm-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg></div>
+              <div class="pm-step-text">
+                 <h4>Analysis Complete</h4>
+                 <p>Ready for review!</p>
+              </div>
+              <div class="pm-step-spinner hidden" id="spinner-3"><div class="mini-spin green"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= DETAILED RESULT VIEW ================= -->
+      <div id="result-view" class="view-section hidden">
+        <header class="result-header-bar" style="display:flex; align-items:center; gap:16px; margin-bottom: 24px;">
+           <button class="icon-btn back-btn" onclick="switchView('library-view')">
+             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+           </button>
+           <h2 class="analyze-title">Analysis Results</h2>
+        </header>
+
+        <div class="result-layout">
+          <!-- Left Column: Main Content -->
+          <div class="result-main">
+            <!-- Header Card -->
+            <div class="res-header-card">
+              <div class="res-header-left">
+                <div class="res-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                </div>
+                <div class="res-title-info">
+                  <h2 id="res-doc-title">Document Title</h2>
+                  <div class="res-meta-badges">
+                    <span class="lib-badge badge-low" id="res-risk-badge">LOW RISK</span>
+                    <span class="res-status-text"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg> Analysis Complete</span>
+                  </div>
+                </div>
+              </div>
+              <div class="res-header-right">
+                <button class="btn btn-small outline" id="res-export-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg> Export</button>
+                <button class="btn btn-small outline"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg> Share</button>
+              </div>
+            </div>
+
+            <!-- Tabs -->
+            <div class="res-tabs">
+              <button class="res-tab active" data-tab="tab-summary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg> Summary</button>
+              <button class="res-tab" data-tab="tab-clauses"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg> Clauses (<span id="res-clause-count">0</span>)</button>
+              <button class="res-tab" data-tab="tab-risks"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg> Risks</button>
+              <button class="res-tab" data-tab="tab-next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Next Steps</button>
+            </div>
+
+            <!-- Tab Content Area -->
+            <div class="res-content-box">
+              <div id="tab-summary" class="tab-pane active">
+                <h4 class="pane-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg> Plain Language Summary</h4>
+                <div class="pane-text" id="res-summary-text">Summary goes here...</div>
+                
+                <div class="highlights-box">
+                  <h5><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z"/></svg> Key Highlights</h5>
+                  <ul class="highlights-list" id="res-highlights-list">
+                    <li>Highlight 1</li>
+                  </ul>
+                </div>
+              </div>
+              
+              <div id="tab-clauses" class="tab-pane hidden">
+                <h4 class="pane-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg> Extracted Clauses</h4>
+                <ul class="res-list" id="res-clauses-list"></ul>
+              </div>
+
+              <div id="tab-risks" class="tab-pane hidden">
+                <h4 class="pane-title text-red"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg> Identified Risks</h4>
+                <ul class="res-list risks-list" id="res-risks-list"></ul>
+              </div>
+              
+              <div id="tab-next" class="tab-pane hidden">
+                <h4 class="pane-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Recommended Next Steps</h4>
+                <p class="pane-text">Based on the analysis, here are the suggested actions to take.</p>
+                <ul class="res-list highlights-list" id="res-next-list">
+                  <li>Review the identified risks carefully.</li>
+                  <li>Consult legal counsel if necessary.</li>
+                  <li>Proceed with signing if terms are acceptable.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: AI Sidebar -->
+          <aside class="ai-assistant-sidebar">
+            <div class="ai-sidebar-header">
+              <div class="ai-sidebar-title">
+                <div class="ai-sidebar-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div>
+                <h4>AI Assistant</h4>
+                <span class="lib-badge badge-low badge-small"><span class="dot-green"></span> Ready</span>
+              </div>
+              <p>Ask questions about your document</p>
+            </div>
+            
+            <div class="ai-suggestions" id="ai-chat-messages" style="overflow-y: auto; display: flex; flex-direction: column;">
+              <div id="ai-welcome-state">
+                <div class="ai-sugg-title"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z"/></svg> Try asking:</div>
+                <button class="ai-sugg-btn" onclick="sendChat('What are the main risks in this document?')">What are the main risks in this document?</button>
+                <button class="ai-sugg-btn" onclick="sendChat('What are my obligations under this agreement?')">What are my obligations under this agreement?</button>
+                <button class="ai-sugg-btn" onclick="sendChat('Are there any hidden fees or costs?')">Are there any hidden fees or costs?</button>
+              </div>
+            </div>
+            
+            <div class="ai-input-area">
+              <div class="ai-input-box">
+                <input type="text" id="ai-chat-input" placeholder="Ask a question about this document..." onkeypress="if(event.key === 'Enter') { sendChat(this.value); this.value = ''; }" />
+                <button class="ai-send-btn" onclick="const i = document.getElementById('ai-chat-input'); sendChat(i.value); i.value = '';"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></button>
+              </div>
+              <div class="ai-tip">
+                <span class="bulb">💡</span> <strong>Tip:</strong> Ask specific questions about clauses, obligations, risks, or terms you don't understand.
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+
+      <!-- Generic hidden file input used anywhere -->
+      <input type="file" id="fileNode" hidden accept="application/pdf,image/*,text/plain" />
+      
+    </main>
   </div>
 
-  <main class="container">
-    <header class="header">
-      <div class="logo">
-        <svg fill="currentColor" viewBox="0 0 24 24" class="icon"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"/></svg>
-        <h1>DocInsight AI</h1>
-      </div>
-      <p>Intelligent Document Classification powered by Gemini & LiteParse</p>
-    </header>
-
-    <div class="card upload-card">
-      <div id="dropzone" class="dropzone">
-        <svg class="upload-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
-        <h3>Drag & drop your document here</h3>
-        <p>Supports PDF and Images</p>
-        <button id="browse-btn" class="btn primary-btn">Browse Files</button>
-        <input type="file" id="fileNode" hidden accept="application/pdf,image/*,text/plain" />
-      </div>
-      
-      <div id="loading" class="hidden">
-        <div class="spinner"></div>
-        <p>Extracting text and analyzing patterns...</p>
-      </div>
-    </div>
-
-    <div id="result-card" class="card result-card hidden">
-      <h2>Classification Result</h2>
-      <div class="result-details">
-        <div class="data-group">
-          <span class="label">Document Type</span>
-          <span id="doc-type" class="value badge">Identity Proof</span>
-        </div>
-        <div class="data-group">
-          <span class="label">Confidence</span>
-          <span id="doc-confidence" class="value">99%</span>
-        </div>
-        <div class="data-group">
-          <span class="label">Processing Time</span>
-          <span id="doc-time" class="value">1.2 sec</span>
-        </div>
-      </div>
-      
-      <div id="advanced-insights" class="insights-section hidden" style="margin-top: 2rem;">
-        <h3 style="color: var(--accent); margin-bottom: 0.5rem; font-weight: 600;">Summary</h3>
-        <p id="doc-summary" style="line-height: 1.6; margin-bottom: 1.5rem; color: var(--text-secondary);"></p>
-        
-        <h3 style="color: var(--accent); margin-bottom: 0.5rem; font-weight: 600;">Key Clauses</h3>
-        <ul id="doc-clauses" style="margin-left: 1.5rem; margin-bottom: 1.5rem; line-height: 1.6; color: var(--text-secondary);"></ul>
-
-        <h3 style="color: #ff5252; margin-bottom: 0.5rem; font-weight: 600;">Risks / Red Flags</h3>
-        <ul id="doc-risks" style="margin-left: 1.5rem; margin-bottom: 1.5rem; line-height: 1.6; color: var(--text-secondary);"></ul>
-      </div>
-
-      <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
-        <button id="download-btn" class="btn primary-btn" style="flex: 1;">Download Report</button>
-        <button id="reset-btn" class="btn outline-btn" style="flex: 1; margin-top: 0;">Analyze Another</button>
-      </div>
-    </div>
-  </main>
-
   <script>
-    const dropzone = document.getElementById('dropzone');
-    const fileNode = document.getElementById('fileNode');
-    const browseBtn = document.getElementById('browse-btn');
-    const loading = document.getElementById('loading');
-    const resultCard = document.getElementById('result-card');
+    // Navigation logic
+    const navItems = document.querySelectorAll('.nav-item');
+    const views = document.querySelectorAll('.view-section');
+    const backBtn = document.getElementById('back-to-dashboard');
     
-    // UI Elements for data
+    function switchView(targetId) {
+      if(!targetId) return;
+      views.forEach(v => v.classList.add('hidden'));
+      document.getElementById(targetId).classList.remove('hidden');
+      
+      navItems.forEach(item => {
+        if(item.dataset.target === targetId) item.classList.add('active');
+        else item.classList.remove('active');
+      });
+    }
+
+    navItems.forEach(item => {
+      item.addEventListener('click', () => switchView(item.dataset.target));
+    });
+
+    backBtn.addEventListener('click', () => switchView('dashboard-view'));
+
+    // Upload logic
+    const fileNode = document.getElementById('fileNode');
+    const triggers = document.querySelectorAll('.drop-trigger, #analyze-main-btn, .drop-btn');
+    const loading = document.getElementById('loading');
+    const resultOverlay = document.getElementById('result-overlay');
+    
     const docTypeEl = document.getElementById('doc-type');
     const docConfEl = document.getElementById('doc-confidence');
     const docTimeEl = document.getElementById('doc-time');
@@ -90,37 +486,285 @@
     const advancedInsightsEl = document.getElementById('advanced-insights');
     const downloadBtn = document.getElementById('download-btn');
     
-    let currentReportText = ''; // Store report for downloading
+    let currentReportText = '';
 
-    browseBtn.addEventListener('click', () => fileNode.click());
-
-    dropzone.addEventListener('dragover', (e) => {
-      e.preventDefault();
-      dropzone.classList.add('dragover');
-    });
-
-    dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
-
-    dropzone.addEventListener('drop', (e) => {
-      e.preventDefault();
-      dropzone.classList.remove('dragover');
-      if (e.dataTransfer.files.length) handleUpload(e.dataTransfer.files[0]);
+    // Bind all upload triggers
+    triggers.forEach(t => {
+      t.addEventListener('click', (e) => {
+        e.stopPropagation(); // Prevent duplicate events if nested
+        fileNode.click();
+      });
+      // Handle drag and drop on triggers
+      t.addEventListener('dragover', (e) => { e.preventDefault(); t.classList.add('drag-hover'); });
+      t.addEventListener('dragleave', (e) => { t.classList.remove('drag-hover'); });
+      t.addEventListener('drop', (e) => {
+        e.preventDefault();
+        t.classList.remove('drag-hover');
+        if (e.dataTransfer.files.length) handleUpload(e.dataTransfer.files[0]);
+      });
     });
 
     fileNode.addEventListener('change', (e) => {
       if (e.target.files.length) handleUpload(e.target.files[0]);
     });
 
-    document.getElementById('reset-btn').addEventListener('click', () => {
-      resultCard.classList.add('hidden');
-      dropzone.classList.remove('hidden');
-      fileNode.value = '';
+
+
+    document.getElementById('lib-analyze-btn').addEventListener('click', () => switchView('analyze-view'));
+
+    let docHistory = JSON.parse(localStorage.getItem('docHistory')) || [];
+
+    const getReportText = (data) => {
+      const clausesStr = (data.clauses || []).map(c => '- ' + c).join('\n');
+      const risksStr = (data.risks || []).map(r => '- ' + r).join('\n');
+      return "--- DocInsight AI Report ---\n\n" +
+        "Type: " + data.documentType + "\n" +
+        "Confidence: " + data.confidenceScore + "\n\n" +
+        "SUMMARY:\n" + data.summary + "\n\n" +
+        "KEY CLAUSES:\n" + clausesStr + "\n\n" +
+        "RISKS & RED FLAGS:\n" + risksStr + "\n";
+    };
+
+    function renderLibrary() {
+      const grid = document.getElementById('lib-grid');
+      if (!grid) return;
+      grid.innerHTML = '';
+      
+      if (docHistory.length === 0) {
+        grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-light);">No documents analyzed yet. Upload one to get started!</div>';
+        return;
+      }
+  
+      docHistory.forEach((doc, idx) => {
+        let riskLevel = 'LOW RISK';
+        let riskClass = 'badge-low';
+        let riskPercent = Math.floor(Math.random() * 20); 
+  
+        if (doc.risks && doc.risks.length > 2) { riskLevel = 'HIGH RISK'; riskClass = 'badge-high'; riskPercent = 70 + Math.floor(Math.random() * 20); }
+        else if (doc.risks && doc.risks.length > 0) { riskLevel = 'MEDIUM RISK'; riskClass = 'badge-med'; riskPercent = 30 + Math.floor(Math.random() * 30); }
+        
+        const shortTitle = doc.title.length > 25 ? doc.title.substring(0, 25) + '...' : doc.title;
+        const shortSumm = doc.summary ? doc.summary.substring(0, 120) + '...' : 'No summary available.';
+
+        const card = document.createElement('div');
+        card.className = 'lib-card';
+        card.innerHTML = `
+          <div class="lib-card-header">
+            <h4 title="${doc.title}">${shortTitle}</h4>
+            <span class="lib-badge ${riskClass}">${riskLevel}</span>
+          </div>
+          <div class="lib-status green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> Completed</div>
+          <p class="lib-summary">${shortSumm}</p>
+          
+          <div class="lib-meta">
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> ${doc.date}</span>
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> ${riskPercent}% risk</span>
+          </div>
+          
+          <div class="lib-tags">
+            <span class="tag tag-red">risk</span>
+            <span class="tag tag-green">payment</span>
+            <span class="tag tag-blue">obligation</span>
+            <span class="tag tag-grey">+${Math.max(1, (doc.clauses?.length || 1) - 2)} more</span>
+          </div>
+          
+          <div class="lib-actions">
+            <button class="lib-btn-view" onclick="viewDocument(${idx})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg> View</button>
+            <button class="lib-btn-download" onclick="downloadDocumentIdx(${idx})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg></button>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function viewDocument(idx) {
+      const data = docHistory[idx];
+      if (!data) return;
+      
+      currentReportText = getReportText(data);
+      // Populate new view
+      document.getElementById('res-doc-title').innerText = data.title;
+      
+      let riskLevel = 'LOW RISK';
+      let riskClass = 'badge-low';
+      let riskPercent = Math.floor(Math.random() * 20); 
+      if (data.risks && data.risks.length > 2) { riskLevel = 'HIGH RISK'; riskClass = 'badge-high'; riskPercent = 70 + Math.floor(Math.random()*20); }
+      else if (data.risks && data.risks.length > 0) { riskLevel = 'MEDIUM RISK'; riskClass = 'badge-med'; riskPercent = 30 + Math.floor(Math.random()*30); }
+      
+      const riskBadge = document.getElementById('res-risk-badge');
+      riskBadge.className = 'lib-badge ' + riskClass;
+      riskBadge.innerText = riskLevel + ' (' + riskPercent + '%)';
+      
+      document.getElementById('res-summary-text').innerText = data.summary || 'No summary available.';
+      
+      document.getElementById('res-clause-count').innerText = (data.clauses || []).length;
+      const cList = document.getElementById('res-clauses-list');
+      cList.innerHTML = '';
+      (data.clauses || []).forEach(clause => {
+        const li = document.createElement('li'); li.innerText = clause; cList.appendChild(li);
+      });
+      
+      const rList = document.getElementById('res-risks-list');
+      rList.innerHTML = '';
+      (data.risks || []).forEach(risk => {
+        const li = document.createElement('li'); li.innerText = risk; rList.appendChild(li);
+      });
+      
+      const hList = document.getElementById('res-highlights-list');
+      hList.innerHTML = '';
+      const clausesToHighlight = data.clauses ? data.clauses.slice(0, 3) : ['Strong academic background', 'Experience with significant AI projects', 'Active involvement in relevant endeavors'];
+      
+      clausesToHighlight.forEach(hl => {
+        const li = document.createElement('li'); li.innerText = hl; hList.appendChild(li);
+      });
+      
+      loading.classList.add('hidden');
+      switchView('result-view');
+    }
+
+    // Tab Logic
+    const resTabs = document.querySelectorAll('.res-tab');
+    const resPanes = document.querySelectorAll('.tab-pane');
+    resTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        resTabs.forEach(t => t.classList.remove('active'));
+        resPanes.forEach(p => p.classList.add('hidden'));
+        tab.classList.add('active');
+        document.getElementById(tab.dataset.tab).classList.remove('hidden');
+      });
     });
 
+    document.getElementById('res-export-btn').addEventListener('click', () => {
+      if (!currentReportText) return;
+      triggerDownload(currentReportText, 'Analysis');
+    });
+
+    function downloadDocumentIdx(idx) {
+      const data = docHistory[idx];
+      if (!data) return;
+      const text = getReportText(data);
+      triggerDownload(text, data.title);
+    }
+    
+    function triggerDownload(text, filename) {
+      const blob = new Blob([text], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'DocInsight_Report_' + (filename || Date.now()) + '.txt';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+    
+    async function sendChat(message) {
+      if (!message || !message.trim()) return;
+      if (!currentReportText) {
+         alert("Please analyze a document first.");
+         return;
+      }
+      
+      const chatMessages = document.getElementById('ai-chat-messages');
+      const welcome = document.getElementById('ai-welcome-state');
+      if (welcome) welcome.style.display = 'none';
+      
+      // User Msg
+      const userMsg = document.createElement('div');
+      userMsg.style.cssText = "background: var(--primary); color: white; padding: 10px 14px; border-radius: 12px 12px 0 12px; margin-bottom: 12px; align-self: flex-end; font-size: 0.9rem; max-width: 85%; word-wrap: break-word;";
+      userMsg.innerText = message;
+      chatMessages.appendChild(userMsg);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+      
+      // Loading Msg
+      const loadingMsg = document.createElement('div');
+      loadingMsg.style.cssText = "background: white; border: 1px solid var(--border-light); color: var(--text-light); padding: 10px 14px; border-radius: 12px 12px 12px 0; margin-bottom: 12px; align-self: flex-start; font-size: 0.9rem;";
+      loadingMsg.innerText = "Thinking...";
+      chatMessages.appendChild(loadingMsg);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+      
+      try {
+        const response = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message, context: currentReportText })
+        });
+        const data = await response.json();
+        
+        chatMessages.removeChild(loadingMsg);
+        
+        if (response.ok) {
+           const aiMsg = document.createElement('div');
+           aiMsg.style.cssText = "background: white; border: 1px solid var(--border-light); color: var(--text-main); padding: 12px 16px; border-radius: 12px 12px 12px 0; margin-bottom: 12px; align-self: flex-start; font-size: 0.9rem; line-height: 1.5; max-width: 90%;";
+           aiMsg.innerText = data.response;
+           chatMessages.appendChild(aiMsg);
+        } else {
+           const errMsg = document.createElement('div');
+           errMsg.style.cssText = "color: var(--accent-red); font-size: 0.85rem; margin-bottom: 12px;";
+           errMsg.innerText = "Error: " + (data.error || "Failed to get response");
+           chatMessages.appendChild(errMsg);
+        }
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      } catch(e) {
+        chatMessages.removeChild(loadingMsg);
+        const errMsg = document.createElement('div');
+        errMsg.style.cssText = "color: var(--accent-red); font-size: 0.85rem; margin-bottom: 12px;";
+        errMsg.innerText = "Connection error.";
+        chatMessages.appendChild(errMsg);
+      }
+    }
+
+    // Call render once initially
+    renderLibrary();
+
+    let progressInterval = null;
+
     async function handleUpload(file) {
-      dropzone.classList.add('hidden');
+      const loading = document.getElementById('loading');
+      
+      document.getElementById('pm-filename').innerText = file.name;
       loading.classList.remove('hidden');
-      resultCard.classList.add('hidden');
+      
+      const pmFill = document.getElementById('pm-fill');
+      const pmPercent = document.getElementById('pm-percent');
+      
+      let p = 0;
+      pmFill.style.width = '0%';
+      pmPercent.innerText = '0%';
+      
+      document.getElementById('step-1').className = 'pm-step active';
+      document.getElementById('step-2').className = 'pm-step';
+      document.getElementById('step-3').className = 'pm-step';
+      
+      document.getElementById('spinner-1').classList.remove('hidden');
+      document.getElementById('spinner-2').classList.add('hidden');
+      document.getElementById('spinner-3').classList.add('hidden');
+      
+      document.getElementById('pm-title').innerText = 'Extracting Text';
+      document.getElementById('pm-subtitle').innerText = 'Reading document content...';
+
+      if (progressInterval) clearInterval(progressInterval);
+      
+      progressInterval = setInterval(() => {
+        if (p < 40) {
+           p += Math.random() * 5;
+        } else if (p >= 40 && p < 90) {
+           document.getElementById('step-1').className = 'pm-step completed';
+           document.getElementById('step-2').className = 'pm-step active';
+           
+           document.getElementById('spinner-1').classList.add('hidden');
+           document.getElementById('spinner-2').classList.remove('hidden');
+           
+           document.getElementById('pm-title').innerText = 'AI Analysis';
+           document.getElementById('pm-subtitle').innerText = 'Analyzing legal content and risks...';
+           
+           p += Math.random() * 2;
+        }
+        if (p > 90) p = 90; 
+        
+        pmFill.style.width = Math.min(p, 90) + '%';
+        pmPercent.innerText = Math.floor(Math.min(p, 90)) + '%';
+      }, 500);
 
       const formData = new FormData();
       formData.append('file', file);
@@ -134,64 +778,52 @@
         const data = await response.json();
         
         if (response.ok) {
-          docTypeEl.innerText = data.documentType;
-          docConfEl.innerText = data.confidenceScore;
-          docTimeEl.innerText = data.processingTime;
+          clearInterval(progressInterval);
+          p = 100;
+          pmFill.style.width = '100%';
+          pmPercent.innerText = '100%';
           
-          if (data.summary) {
-            advancedInsightsEl.classList.remove('hidden');
-            docSummaryEl.innerText = data.summary;
-            
-            docClausesEl.innerHTML = '';
-            (data.clauses || []).forEach(clause => {
-              const li = document.createElement('li'); li.innerText = clause; docClausesEl.appendChild(li);
-            });
-            
-            docRisksEl.innerHTML = '';
-            (data.risks || []).forEach(risk => {
-              const li = document.createElement('li'); li.innerText = risk; docRisksEl.appendChild(li);
-            });
-
-            // Generate exactly what gets downloaded
-            const clausesStr = (data.clauses || []).map(c => '- ' + c).join('\n');
-            const risksStr = (data.risks || []).map(r => '- ' + r).join('\n');
-            currentReportText = "--- DocInsight AI Report ---\n\n" +
-              "Type: " + data.documentType + "\n" +
-              "Confidence: " + data.confidenceScore + "\n\n" +
-              "SUMMARY:\n" + data.summary + "\n\n" +
-              "KEY CLAUSES:\n" + clausesStr + "\n\n" +
-              "RISKS & RED FLAGS:\n" + risksStr + "\n";
-          }
+          document.getElementById('step-2').className = 'pm-step completed';
+          document.getElementById('step-3').className = 'pm-step active';
+          document.getElementById('spinner-2').classList.add('hidden');
+          document.getElementById('spinner-3').classList.remove('hidden');
           
-          loading.classList.add('hidden');
-          resultCard.classList.remove('hidden');
+          document.getElementById('pm-title').innerText = 'Analysis Complete';
+          document.getElementById('pm-subtitle').innerText = 'Ready for review!';
+          
+          setTimeout(() => {
+            const docEntry = {
+              id: Date.now(),
+              title: file.name,
+              documentType: data.documentType,
+              confidenceScore: data.confidenceScore,
+              processingTime: data.processingTime,
+              summary: data.summary,
+              clauses: data.clauses,
+              risks: data.risks,
+              date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+            };
+            docHistory.unshift(docEntry);
+            localStorage.setItem('docHistory', JSON.stringify(docHistory));
+            renderLibrary();
+  
+            viewDocument(0);
+          }, 800);
         } else {
+          clearInterval(progressInterval);
           alert('Error: ' + (data.details || data.error));
-          resetUI();
+          loading.classList.add('hidden');
         }
       } catch (err) {
+        clearInterval(progressInterval);
         alert('Upload failed. Is the server running?');
-        resetUI();
+        loading.classList.add('hidden');
       }
     }
 
-    downloadBtn.addEventListener('click', () => {
-      if (!currentReportText) return;
-      const blob = new Blob([currentReportText], { type: 'text/plain' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'DocInsight_Report_' + Date.now() + '.txt';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    });
 
-    function resetUI() {
-      loading.classList.add('hidden');
-      dropzone.classList.remove('hidden');
-    }
+
+
   </script>
 </body>
 </html>
