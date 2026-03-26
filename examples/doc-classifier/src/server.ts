@@ -5,6 +5,10 @@ import { classifyRoute } from './routes/classify.js';
 import { chatRoute } from './routes/chat.js';
 import * as dotenv from 'dotenv';
 import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 dotenv.config();
 

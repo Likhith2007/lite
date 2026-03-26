@@ -34,16 +34,17 @@ export async function processDocument(filePath: string) {
     const isOcrFailed = (!textContent || textContent.trim() === '' || textContent.length < 50 || alphanumericRatio < 0.5);
 
     // 2. Classify with Gemini
-    const basePrompt = `You are an expert document classifier. 
+    const basePrompt = `You are an expert document analyst and classifier. 
 Classify the provided document into exactly one of these predefined categories:
-- Identity Proofs (e.g., Aadhaar, PAN, Passport)
-- Financial Documents (e.g., Bank Statements, Invoices, Receipts)
-- Legal Agreements
-- Compliance Documents
-- Tax Documents
-- Business Registration Documents
-- Presentations / Pitch Decks
-- Academic / Project Proposals
+- Identity Proofs (e.g., Aadhaar, PAN, Passport, ID Cards)
+- Financial Documents (e.g., Bank Statements, Invoices, Receipts, Tax Returns)
+- Legal Agreements & Contracts
+- Compliance & Regulatory Documents
+- Business Registration & Corporate Documents
+- Presentations, Pitch Decks & Marketing Material
+- Academic, Reports & Project Proposals
+- Personal Documents (e.g., Letters, Notes, Resumes)
+- Technical Documentation & Manuals
 - Unknown (if it doesn't fit the above)
 
 You must return ONLY a JSON response matching this exact structure:
@@ -51,8 +52,8 @@ You must return ONLY a JSON response matching this exact structure:
   "category": "category name",
   "confidence": <number between 0 and 100>,
   "summary": "A 2-3 sentence overview of the document contents",
-  "clauses": ["Key point/clause 1", "Key point/clause 2"],
-  "risks": ["Potential risk or red flag 1", "Potential risk 2 (if any)"]
+  "clauses": ["Key point, obligation, or highlight 1", "Key point 2"],
+  "risks": ["Potential risk, red flag, or warning 1", "Potential risk 2 (if any)"]
 }`;
 
     const path = await import('path');

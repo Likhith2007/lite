@@ -225,7 +225,7 @@ export async function findImageMagickCommand(): Promise<{
   }
 
   // ImageMagick v6 uses 'convert' command
-  if (process.platform !== 'win32') {
+  if (process.platform !== "win32") {
     if ((await isCommandAvailable("convert")) || (await isCommandAvailableWindows("convert"))) {
       return { command: "convert", args: [] };
     }

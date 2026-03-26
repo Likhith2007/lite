@@ -1,4 +1,4 @@
-import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
+import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import { processDocument } from '../services/classifier.js';
 import * as path from 'path';
 import * as fs from 'fs';

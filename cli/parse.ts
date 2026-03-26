@@ -536,9 +536,11 @@ async function speakText(text: string, quiet: boolean): Promise<void> {
         await execAsync(`espeak "${cleanText}"`);
       }
     }
-  } catch (error) {
+  } catch {
     if (!quiet) {
-      console.error("Warning: Could not speak output. Ensure system TTS is installed.");
+      process.stderr.write(
+        "\nWarning: Could not speak output. Ensure system TTS is installed.\n"
+      );
     }
   }
 }

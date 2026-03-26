@@ -208,12 +208,12 @@
             <div class="big-sparkle"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z" fill="white"/></svg></div>
           </div>
           
-          <h3>Upload Legal Document</h3>
-          <p class="drop-desc">Drag & drop your legal document here or click to browse. Our AI will analyze it in seconds and provide clear insights.</p>
+          <h3>Upload Document</h3>
+          <p class="drop-desc">Drag & drop any document here or click to browse. Our AI supports PDF, Word, Excel, PowerPoint, Images, and Text files.</p>
           
           <div class="drop-controls">
-            <button class="btn btn-primary drop-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg> Choose Document</button>
-            <span class="file-hint"><span class="dot"></span> Supports PDF, DOC, DOCX • Max 10MB</span>
+            <button class="btn btn-primary drop-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg> Choose File</button>
+            <span class="file-hint"><span class="dot"></span> Supports PDF, Office, Images, Text • Max 20MB</span>
           </div>
 
           <!-- Bottom feature cards inside the dropzone layout -->
@@ -253,11 +253,26 @@
         <div class="lib-filters">
           <div class="search-box">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-            <input type="text" placeholder="Search documents..." id="lib-search" />
+            <input type="text" placeholder="Search documents..." id="lib-search" oninput="renderLibrary()" />
           </div>
           <div class="filter-actions-group">
-            <button class="filter-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg> All Status <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
-            <button class="filter-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg> All Risk <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+            <div class="filter-select-wrapper">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
+              <select id="status-filter" class="filter-select" onchange="renderLibrary()">
+                <option value="all">All Status</option>
+                <option value="completed">Completed</option>
+                <option value="processing">Processing</option>
+              </select>
+            </div>
+            <div class="filter-select-wrapper">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+              <select id="risk-filter" class="filter-select" onchange="renderLibrary()">
+                <option value="all">All Risk</option>
+                <option value="low">Low Risk</option>
+                <option value="med">Medium Risk</option>
+                <option value="high">High Risk</option>
+              </select>
+            </div>
           </div>
         </div>
 
@@ -434,7 +449,7 @@
       </div>
 
       <!-- Generic hidden file input used anywhere -->
-      <input type="file" id="fileNode" hidden accept="application/pdf,image/*,text/plain" />
+      <input type="file" id="fileNode" hidden />
       
       <!-- Share Modal -->
       <div class="global-overlay hidden" id="share-modal">
@@ -545,13 +560,46 @@
       const libGrid = document.getElementById('lib-grid');
       const emptyState = document.getElementById('empty-state');
       if (!libGrid) return;
+      
+      const searchTerm = document.getElementById('lib-search').value.toLowerCase();
+      const statusFilter = document.getElementById('status-filter').value;
+      const riskFilter = document.getElementById('risk-filter').value;
+
       libGrid.innerHTML = '';
       
-      if (docHistory.length === 0) {
+      const filteredDocs = docHistory.filter((doc, idx) => {
+        // Search filter
+        const matchesSearch = doc.title.toLowerCase().includes(searchTerm) || 
+                             (doc.summary && doc.summary.toLowerCase().includes(searchTerm));
+        
+        // Status filter (all docs are "completed" in this version, but let's handle the logic)
+        const matchesStatus = statusFilter === 'all' || statusFilter === 'completed';
+
+        // Risk filter logic
+        let actualRisk = 'low';
+        if (doc.risks && doc.risks.length > 2) actualRisk = 'high';
+        else if (doc.risks && doc.risks.length > 0) actualRisk = 'med';
+        
+        const matchesRisk = riskFilter === 'all' || riskFilter === actualRisk;
+
+        return matchesSearch && matchesStatus && matchesRisk;
+      });
+
+      if (filteredDocs.length === 0) {
         if (emptyState) emptyState.classList.remove('hidden');
+        if (searchTerm || riskFilter !== 'all' || statusFilter !== 'all') {
+          emptyState.innerHTML = `
+            <div class="empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div>
+            <h3>No results found</h3>
+            <p>Try adjusting your search or filters to find what you're looking for.</p>
+          `;
+        }
       } else {
         if (emptyState) emptyState.classList.add('hidden');
-        docHistory.forEach((doc, idx) => {
+        filteredDocs.forEach((doc) => {
+          // Find original index in docHistory for viewDocument/download
+          const originalIdx = docHistory.indexOf(doc);
+          
           let riskLevel = 'LOW RISK';
           let riskClass = 'badge-low';
           let riskPercent = Math.floor(Math.random() * 20); 
@@ -584,8 +632,8 @@
             </div>
             
             <div class="lib-actions">
-              <button class="lib-btn-view" onclick="viewDocument(${idx})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg> View Results</button>
-              <button class="lib-btn-download" onclick="downloadDocumentIdx(${idx})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg></button>
+              <button class="lib-btn-view" onclick="viewDocument(${originalIdx})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg> View Results</button>
+              <button class="lib-btn-download" onclick="downloadDocumentIdx(${originalIdx})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg></button>
             </div>
           `;
           libGrid.appendChild(card);
@@ -975,9 +1023,7 @@
       }
     }
 
-
-
-
+    renderLibrary();
   </script>
 </body>
 </html>

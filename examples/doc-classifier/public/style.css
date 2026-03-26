@@ -816,7 +816,7 @@ body {
   display: flex;
   gap: 12px;
 }
-.filter-btn {
+.filter-btn, .filter-select-wrapper {
   background: transparent;
   border: 1px solid var(--border-light);
   border-radius: 8px;
@@ -828,9 +828,39 @@ body {
   align-items: center;
   gap: 8px;
   cursor: pointer;
+  position: relative;
+  transition: all 0.2s;
 }
-.filter-btn:hover { background: #f8fafd; }
-.filter-btn svg { width: 16px; color: var(--text-light); }
+.filter-btn:hover, .filter-select-wrapper:hover { background: #f8fafd; border-color: #cbd4f0; }
+
+.filter-select {
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  cursor: pointer;
+  width: 100%;
+  padding-right: 20px;
+}
+
+.filter-select-wrapper::after {
+  content: "";
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 12px;
+  height: 12px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  pointer-events: none;
+}
+
+.filter-btn svg, .filter-select-wrapper svg { width: 16px; color: var(--text-light); flex-shrink: 0; }
 .filter-btn .chevron { width: 14px; margin-left: 4px; }
 
 .lib-grid {
