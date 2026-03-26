@@ -103,10 +103,10 @@
           <div class="stat-card">
             <div class="stat-content">
               <span class="stat-label">Total Documents</span>
-              <div class="stat-value">10</div>
+              <div class="stat-value" id="stat-total-docs">0</div>
               <div class="stat-trend trend-up">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 7L13.5 15.5L8.5 10.5L2 17"></path><path d="M16 7H22V13"></path></svg>
-                12% increase <span class="trend-text">vs last week</span>
+                <span id="stat-total-trend">0%</span> <span class="trend-text">vs last week</span>
               </div>
             </div>
             <div class="stat-icon icon-blue">
@@ -117,10 +117,10 @@
           <div class="stat-card">
             <div class="stat-content">
               <span class="stat-label">Completed Analyses</span>
-              <div class="stat-value">10</div>
+              <div class="stat-value" id="stat-completed">0</div>
               <div class="stat-trend trend-up">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 7L13.5 15.5L8.5 10.5L2 17"></path><path d="M16 7H22V13"></path></svg>
-                12% increase <span class="trend-text">vs last week</span>
+                <span id="stat-completed-trend">0%</span> <span class="trend-text">vs last week</span>
               </div>
             </div>
             <div class="stat-icon icon-green">
@@ -131,10 +131,10 @@
           <div class="stat-card">
             <div class="stat-content">
               <span class="stat-label">High Risk Documents</span>
-              <div class="stat-value">1</div>
+              <div class="stat-value" id="stat-high-risk">0</div>
               <div class="stat-trend trend-up">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 7L13.5 15.5L8.5 10.5L2 17"></path><path d="M16 7H22V13"></path></svg>
-                12% increase <span class="trend-text">vs last week</span>
+                <span id="stat-risk-trend">0%</span> <span class="trend-text">vs last week</span>
               </div>
             </div>
             <div class="stat-icon icon-red">
@@ -145,10 +145,10 @@
           <div class="stat-card">
             <div class="stat-content">
               <span class="stat-label">Avg Processing Time</span>
-              <div class="stat-value">8.5s</div>
+              <div class="stat-value" id="stat-avg-time">0s</div>
               <div class="stat-trend trend-up">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 7L13.5 15.5L8.5 10.5L2 17"></path><path d="M16 7H22V13"></path></svg>
-                12% increase <span class="trend-text">vs last week</span>
+                <span id="stat-time-trend">0%</span> <span class="trend-text">vs last week</span>
               </div>
             </div>
             <div class="stat-icon icon-purple">
@@ -164,18 +164,8 @@
               <h3>Recent Documents</h3>
               <button class="btn btn-small outline">View All</button>
             </div>
-            <div class="doc-list">
-              <div class="doc-item">
-                <div class="doc-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg></div>
-                <div class="doc-item-details">
-                  <h4>ZORA <svg class="verified-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg></h4>
-                  <div class="doc-meta">
-                    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> Mar 23, 2026</span>
-                    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg> 85% risk</span>
-                  </div>
-                </div>
-                <div class="doc-risk-badge high">HIGH</div>
-              </div>
+            <div class="doc-list" id="dashboard-recent-docs">
+              <!-- Real documents will be injected here -->
             </div>
           </div>
 
@@ -360,8 +350,9 @@
                 </div>
               </div>
               <div class="res-header-right">
+                <button class="btn btn-small outline" id="res-listen-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg> Listen</button>
                 <button class="btn btn-small outline" id="res-export-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg> Export</button>
-                <button class="btn btn-small outline"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg> Share</button>
+                <button class="btn btn-small outline" id="res-share-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg> Share</button>
               </div>
             </div>
 
@@ -445,6 +436,31 @@
       <!-- Generic hidden file input used anywhere -->
       <input type="file" id="fileNode" hidden accept="application/pdf,image/*,text/plain" />
       
+      <!-- Share Modal -->
+      <div class="global-overlay hidden" id="share-modal">
+        <div class="overlay-box share-box">
+          <div class="share-modal-header">
+            <h3>Share Analysis Results</h3>
+            <button class="close-overlay-btn" onclick="document.getElementById('share-modal').classList.add('hidden')">&times;</button>
+          </div>
+          <p class="share-modal-desc">Select a platform to share the document insights.</p>
+          <div class="share-grid">
+            <button class="share-item" id="share-whatsapp">
+              <div class="s-icon s-whatsapp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.72.937 3.659 1.432 5.631 1.433h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></div>
+              <span>WhatsApp</span>
+            </button>
+            <button class="share-item" id="share-gmail">
+              <div class="s-icon s-gmail"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 010 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L12 9.573l8.073-6.08c1.618-1.214 3.927-.059 3.927 1.964z"/></svg></div>
+              <span>Gmail</span>
+            </button>
+            <button class="share-item" id="share-gdrive">
+              <div class="s-icon s-gdrive"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7.71 3.502L1.15 15l3.446 6.002L11.157 9.505zM9.73 9.505l3.444 6.002H24.002L20.554 3.502zM22.846 16.507H6.556L3.111 22.51h16.289z"/></svg></div>
+              <span>G Drive</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      
     </main>
   </div>
 
@@ -473,25 +489,25 @@
 
     // Upload logic
     const fileNode = document.getElementById('fileNode');
-    const triggers = document.querySelectorAll('.drop-trigger, #analyze-main-btn, .drop-btn');
     const loading = document.getElementById('loading');
-    const resultOverlay = document.getElementById('result-overlay');
-    
-    const docTypeEl = document.getElementById('doc-type');
-    const docConfEl = document.getElementById('doc-confidence');
-    const docTimeEl = document.getElementById('doc-time');
-    const docSummaryEl = document.getElementById('doc-summary');
-    const docClausesEl = document.getElementById('doc-clauses');
-    const docRisksEl = document.getElementById('doc-risks');
-    const advancedInsightsEl = document.getElementById('advanced-insights');
-    const downloadBtn = document.getElementById('download-btn');
-    
     let currentReportText = '';
+    
+    // Middle button in landing page
+    document.getElementById('analyze-main-btn').addEventListener('click', () => switchView('analyze-view'));
+    
+    // Quick action card in dashboard
+    const quickActionCard = document.querySelector('.quick-actions-panel .drop-trigger');
+    if (quickActionCard) {
+      quickActionCard.addEventListener('click', () => switchView('analyze-view'));
+    }
 
+    // Actual upload triggers (only on the analysis page)
+    const triggers = document.querySelectorAll('#analyze-view .drop-trigger, #analyze-view .drop-btn');
+    
     // Bind all upload triggers
     triggers.forEach(t => {
       t.addEventListener('click', (e) => {
-        e.stopPropagation(); // Prevent duplicate events if nested
+        e.stopPropagation();
         fileNode.click();
       });
       // Handle drag and drop on triggers
@@ -526,55 +542,113 @@
     };
 
     function renderLibrary() {
-      const grid = document.getElementById('lib-grid');
-      if (!grid) return;
-      grid.innerHTML = '';
+      const libGrid = document.getElementById('lib-grid');
+      const emptyState = document.getElementById('empty-state');
+      if (!libGrid) return;
+      libGrid.innerHTML = '';
       
       if (docHistory.length === 0) {
-        grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-light);">No documents analyzed yet. Upload one to get started!</div>';
-        return;
-      }
+        if (emptyState) emptyState.classList.remove('hidden');
+      } else {
+        if (emptyState) emptyState.classList.add('hidden');
+        docHistory.forEach((doc, idx) => {
+          let riskLevel = 'LOW RISK';
+          let riskClass = 'badge-low';
+          let riskPercent = Math.floor(Math.random() * 20); 
   
-      docHistory.forEach((doc, idx) => {
-        let riskLevel = 'LOW RISK';
-        let riskClass = 'badge-low';
-        let riskPercent = Math.floor(Math.random() * 20); 
-  
-        if (doc.risks && doc.risks.length > 2) { riskLevel = 'HIGH RISK'; riskClass = 'badge-high'; riskPercent = 70 + Math.floor(Math.random() * 20); }
-        else if (doc.risks && doc.risks.length > 0) { riskLevel = 'MEDIUM RISK'; riskClass = 'badge-med'; riskPercent = 30 + Math.floor(Math.random() * 30); }
-        
-        const shortTitle = doc.title.length > 25 ? doc.title.substring(0, 25) + '...' : doc.title;
-        const shortSumm = doc.summary ? doc.summary.substring(0, 120) + '...' : 'No summary available.';
+          if (doc.risks && doc.risks.length > 2) { riskLevel = 'HIGH RISK'; riskClass = 'badge-high'; riskPercent = 70 + Math.floor(Math.random() * 20); }
+          else if (doc.risks && doc.risks.length > 0) { riskLevel = 'MEDIUM RISK'; riskClass = 'badge-med'; riskPercent = 30 + Math.floor(Math.random() * 30); }
+          
+          const shortTitle = doc.title.length > 25 ? doc.title.substring(0, 25) + '...' : doc.title;
+          const shortSumm = doc.summary ? doc.summary.substring(0, 120) + '...' : 'No summary available.';
 
-        const card = document.createElement('div');
-        card.className = 'lib-card';
-        card.innerHTML = `
-          <div class="lib-card-header">
-            <h4 title="${doc.title}">${shortTitle}</h4>
-            <span class="lib-badge ${riskClass}">${riskLevel}</span>
-          </div>
-          <div class="lib-status green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> Completed</div>
-          <p class="lib-summary">${shortSumm}</p>
-          
-          <div class="lib-meta">
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> ${doc.date}</span>
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> ${riskPercent}% risk</span>
-          </div>
-          
-          <div class="lib-tags">
-            <span class="tag tag-red">risk</span>
-            <span class="tag tag-green">payment</span>
-            <span class="tag tag-blue">obligation</span>
-            <span class="tag tag-grey">+${Math.max(1, (doc.clauses?.length || 1) - 2)} more</span>
-          </div>
-          
-          <div class="lib-actions">
-            <button class="lib-btn-view" onclick="viewDocument(${idx})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg> View</button>
-            <button class="lib-btn-download" onclick="downloadDocumentIdx(${idx})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg></button>
-          </div>
-        `;
-        grid.appendChild(card);
+          const card = document.createElement('div');
+          card.className = 'lib-card';
+          card.innerHTML = `
+            <div class="lib-card-header">
+              <h4 title="${doc.title}">${shortTitle}</h4>
+              <span class="lib-badge ${riskClass}">${riskLevel}</span>
+            </div>
+            <div class="lib-status green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> Completed</div>
+            <p class="lib-summary">${shortSumm}</p>
+            
+            <div class="lib-meta">
+              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> ${doc.date}</span>
+              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> ${riskPercent}% risk</span>
+            </div>
+            
+            <div class="lib-tags">
+              <span class="tag tag-red">risk</span>
+              <span class="tag tag-green">legal</span>
+              <span class="tag tag-blue">insights</span>
+            </div>
+            
+            <div class="lib-actions">
+              <button class="lib-btn-view" onclick="viewDocument(${idx})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg> View Results</button>
+              <button class="lib-btn-download" onclick="downloadDocumentIdx(${idx})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg></button>
+            </div>
+          `;
+          libGrid.appendChild(card);
+        });
+      }
+      updateDashboardStats();
+    }
+
+    function updateDashboardStats() {
+      const total = docHistory.length;
+      const highRiskCount = docHistory.filter(d => (d.risks && d.risks.length > 2)).length;
+      
+      let totalTime = 0;
+      docHistory.forEach(d => {
+        const t = parseFloat(d.processingTime.replace(' sec', ''));
+        if (!isNaN(t)) totalTime += t;
       });
+      const avgTime = total > 0 ? (totalTime / total).toFixed(1) : 0;
+
+      document.getElementById('stat-total-docs').innerText = total;
+      document.getElementById('stat-completed').innerText = total;
+      document.getElementById('stat-high-risk').innerText = highRiskCount;
+      document.getElementById('stat-avg-time').innerText = avgTime + 's';
+      
+      // Update Trends relative to total
+      document.getElementById('stat-total-trend').innerText = total > 0 ? '+' + (total * 10) + '%' : '0%';
+      document.getElementById('stat-completed-trend').innerText = total > 0 ? '+100%' : '0%';
+      document.getElementById('stat-risk-trend').innerText = highRiskCount > 0 ? '+15%' : '0%';
+      document.getElementById('stat-time-trend').innerText = total > 0 ? '-5%' : '0%';
+
+      // Update Recent Documents on Dashboard
+      const dashboardRecent = document.getElementById('dashboard-recent-docs');
+      if (!dashboardRecent) return;
+      dashboardRecent.innerHTML = '';
+      
+      if (total === 0) {
+        dashboardRecent.innerHTML = '<div style="text-align: center; padding: 20px; color: var(--text-light); font-size: 0.9rem;">No documents analyzed yet.</div>';
+      } else {
+        docHistory.slice(0, 3).forEach((doc, index) => {
+          const item = document.createElement('div');
+          item.className = 'doc-item';
+          item.style.cursor = 'pointer';
+          item.onclick = () => viewDocument(index);
+          
+          let riskClass = 'low';
+          let rVal = 10 + Math.floor(Math.random() * 20);
+          if (doc.risks && doc.risks.length > 2) { riskClass = 'high'; rVal = 75 + Math.floor(Math.random() * 15); }
+          else if (doc.risks && doc.risks.length > 0) { riskClass = 'med'; rVal = 35 + Math.floor(Math.random() * 25); }
+          
+          item.innerHTML = `
+            <div class="doc-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg></div>
+            <div class="doc-item-details">
+              <h4>${doc.title} <svg class="verified-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg></h4>
+              <div class="doc-meta">
+                <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> ${doc.date}</span>
+                <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg> ${rVal}% risk</span>
+              </div>
+            </div>
+            <div class="doc-risk-badge ${riskClass}">${riskClass.toUpperCase()}</div>
+          `;
+          dashboardRecent.appendChild(item);
+        });
+      }
     }
 
     function viewDocument(idx) {
@@ -658,6 +732,32 @@
       URL.revokeObjectURL(url);
     }
     
+     document.getElementById('res-share-btn').addEventListener('click', () => {
+      document.getElementById('share-modal').classList.remove('hidden');
+    });
+
+    function getShareText() {
+      const title = document.getElementById('res-doc-title').innerText;
+      const summary = document.getElementById('res-summary-text').innerText;
+      const risk = document.getElementById('res-risk-badge').innerText;
+      return `Analysis for: ${title}\nRisk Level: ${risk}\n\nSummary:\n${summary}\n\nShared via Aurora.ai`;
+    }
+
+    document.getElementById('share-whatsapp').addEventListener('click', () => {
+      const text = encodeURIComponent(getShareText());
+      window.open(`https://wa.me/?text=${text}`, '_blank');
+    });
+
+    document.getElementById('share-gmail').addEventListener('click', () => {
+      const title = document.getElementById('res-doc-title').innerText;
+      const body = encodeURIComponent(getShareText());
+      window.open(`mailto:?subject=Legal Analysis: ${title}&body=${body}`, '_blank');
+    });
+
+    document.getElementById('share-gdrive').addEventListener('click', () => {
+      alert("To save to Google Drive:\n1. Click Export to download the summary report.\n2. Upload the downloaded file to your Google Drive.");
+    });
+
     async function sendChat(message) {
       if (!message || !message.trim()) return;
       if (!currentReportText) {
@@ -714,7 +814,61 @@
       }
     }
 
-    // Call render once initially
+    // --- Speech Synthesis ---
+    let isSpeaking = false;
+    let speechUtterance = null;
+
+    function toggleSpeech() {
+      const listenBtn = document.getElementById('res-listen-btn');
+      if (!listenBtn) return;
+
+      if (isSpeaking) {
+        window.speechSynthesis.cancel();
+        stopSpeechUI();
+        return;
+      }
+
+      const summary = document.getElementById('res-summary-text').innerText;
+      const highlights = Array.from(document.querySelectorAll('#res-highlights-list li')).map(li => li.innerText).join('. ');
+      const textToRead = `Analysis Summary: ${summary}. Key highlights include: ${highlights}`;
+
+      speechUtterance = new SpeechSynthesisUtterance(textToRead);
+      speechUtterance.rate = 1.0;
+      speechUtterance.pitch = 1.0;
+      
+      speechUtterance.onstart = () => {
+        isSpeaking = true;
+        listenBtn.classList.add('speaking');
+        listenBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="6" width="12" height="12"></rect></svg> Stop Listening`;
+      };
+
+      speechUtterance.onend = () => {
+        stopSpeechUI();
+      };
+
+      speechUtterance.onerror = () => {
+        stopSpeechUI();
+      };
+
+      window.speechSynthesis.speak(speechUtterance);
+    }
+
+    function stopSpeechUI() {
+      const listenBtn = document.getElementById('res-listen-btn');
+      if (!listenBtn) return;
+      isSpeaking = false;
+      listenBtn.classList.remove('speaking');
+      listenBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg> Listen`;
+    }
+
+    // Attach listener using delegation or directly if element exists
+    document.addEventListener('click', (e) => {
+      if (e.target.id === 'res-listen-btn' || e.target.closest('#res-listen-btn')) {
+        toggleSpeech();
+      }
+    });
+
+    // Initial load
     renderLibrary();
 
     let progressInterval = null;

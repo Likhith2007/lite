@@ -11,6 +11,7 @@
 - **Flexible OCR** (built-in Tesseract.js or pluggable HTTP servers)
 - **Multi-format support** (PDFs, DOCX, XLSX, PPTX, images via conversion)
 - **TypeScript/Node.js** with both library and CLI interfaces
+- **Listen by voice** support in Dashboard and CLI
 
 ## Directory Structure
 

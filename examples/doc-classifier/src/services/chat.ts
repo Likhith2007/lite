@@ -7,7 +7,7 @@ dotenv.config();
 const key = process.env.GEMINI_API_KEY || '';
 console.log(`GEMINI_API_KEY length: ${key.length}`);
 const genAI = new GoogleGenerativeAI(key);
-const modelName = 'gemini-1.5-flash';
+const modelName = 'gemini-flash-latest';
 console.log(`Initializing model: ${modelName}`);
 const model = genAI.getGenerativeModel({ 
   model: modelName,

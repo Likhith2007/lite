@@ -1473,3 +1473,107 @@ body {
   border-radius: 8px;
 }
 .ai-tip .bulb { font-size: 1rem; margin-right: 4px; }
+
+/* Share Modal Styles */
+.share-box {
+  max-width: 450px;
+  width: 90%;
+  padding: 30px;
+}
+
+.share-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.share-modal-header h3 {
+  font-size: 1.25rem;
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.close-overlay-btn {
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--text-light);
+  cursor: pointer;
+  line-height:1;
+}
+
+.share-modal-desc {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  margin-bottom: 24px;
+}
+
+.share-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.share-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  background: #f8fafd;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  padding: 16px 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.share-item:hover {
+  background: white;
+  border-color: var(--border-light);
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.s-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  margin-bottom: 4px;
+}
+
+.s-whatsapp { background: #25D366; }
+.s-gmail { background: #EA4335; }
+.s-gdrive { background: #4285F4; }
+
+.s-icon svg { width: 24px; height: 24px; }
+
+.share-item span {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-main);
+}
+/* Listen Button Speaking State */
+#res-listen-btn.speaking {
+  background: var(--accent-purple);
+  color: white;
+  border-color: var(--accent-purple);
+  box-shadow: 0 0 15px rgba(134, 92, 250, 0.4);
+  animation: voicePulse 1.5s infinite ease-in-out;
+}
+
+@keyframes voicePulse {
+  0% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.02); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+#res-listen-btn svg {
+  margin-right: 8px;
+  width: 18px;
+  height: 18px;
+}

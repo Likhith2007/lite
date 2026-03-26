@@ -28,6 +28,7 @@ interface ParseCommandOptions {
   preserveSmallText?: boolean;
   config?: string;
   quiet?: boolean;
+  speak?: boolean;
 }
 
 interface ScreenshotCommandOptions {
@@ -80,6 +81,7 @@ program
   .option("--preserve-small-text", "Preserve very small text")
   .option("--config <file>", "Config file (JSON)")
   .option("-q, --quiet", "Suppress progress output")
+  .option("--speak", "Read the output aloud via system voice")
   .action(async (file: string, options: ParseCommandOptions) => {
     try {
       const quiet = options.quiet || false;
@@ -149,6 +151,12 @@ program
       } else {
         // Output result to stdout (can be piped)
         console.log(output);
+      }
+
+      // Speak if requested
+      if (options.speak) {
+        const textToSpeak = config.outputFormat === "json" ? result.text : output;
+        await speakText(textToSpeak, quiet);
       }
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : String(error);
@@ -495,6 +503,44 @@ function parsePageNumbers(pagesStr: string): number[] {
   }
 
   return [...new Set(pages)].sort((a, b) => a - b);
+}
+
+/**
+ * Speak text using OS-specific commands
+ */
+async function speakText(text: string, quiet: boolean): Promise<void> {
+  const { exec } = await import("child_process");
+  const { promisify } = await import("util");
+  const execAsync = promisify(exec);
+
+  if (!quiet) {
+    console.error("\n(Speaking output...)");
+  }
+
+  // Clean text for shell (strip quotes and special chars that might break command)
+  const cleanText = text.replace(/["'`\\]/g, "").substring(0, 5000); // Limit to 5k chars for stability
+
+  try {
+    if (process.platform === "win32") {
+      // Windows PowerShell
+      const command = `powershell -Command "Add-Type -AssemblyName System.Speech; (New-Object System.Speech.Synthesis.SpeechSynthesizer).Speak('${cleanText}')"`;
+      await execAsync(command);
+    } else if (process.platform === "darwin") {
+      // macOS
+      await execAsync(`say "${cleanText}"`);
+    } else {
+      // Linux (try espeak or spd-say)
+      try {
+        await execAsync(`spd-say "${cleanText}"`);
+      } catch {
+        await execAsync(`espeak "${cleanText}"`);
+      }
+    }
+  } catch (error) {
+    if (!quiet) {
+      console.error("Warning: Could not speak output. Ensure system TTS is installed.");
+    }
+  }
 }
 
 export { program };

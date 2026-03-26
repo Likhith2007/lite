@@ -17,13 +17,14 @@ async function test(name: string) {
 async function run() {
   const models = [
     'gemini-1.5-flash',
-    'gemini-1.5-flash-latest',
-    'gemini-1.0-pro',
-    'gemini-pro',
-    'gemini-2.0-flash-exp'
+    'gemini-1.5-flash-8b',
+    'gemini-1.5-pro',
+    'gemini-pro'
   ];
+  console.log("Starting model exhaustion test...");
   for (const m of models) {
     await test(m);
   }
+  console.log("Test complete.");
 }
 run();
