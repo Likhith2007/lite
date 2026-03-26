@@ -538,9 +538,7 @@ async function speakText(text: string, quiet: boolean): Promise<void> {
     }
   } catch {
     if (!quiet) {
-      process.stderr.write(
-        "\nWarning: Could not speak output. Ensure system TTS is installed.\n"
-      );
+      process.stderr.write("\nWarning: Could not speak output. Ensure system TTS is installed.\n");
     }
   }
 }
